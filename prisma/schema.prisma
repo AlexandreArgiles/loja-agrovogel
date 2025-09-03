@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("postgresql://postgres:[ke9RefLt@]@db.qhsitlhngaqboxprjmlq.supabase.co:5432/postgres")
+}
+
+// NOVO: Modelo para Categorias
+model Category {
+  id    String @id @default(cuid())
+  name  String @unique // Ex: "Conectividade Rural", "Segurança", "Automação"
+  slug  String @unique
+  items Item[] // Relação: Uma categoria tem vários itens
+
+  @@map("categories")
+}
+
+model Item {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String   @db.Text
+  price       Int      // Preço em centavos
+  images      String[]
+  stock       Int?     // Nulo para serviços/instalações
+
+  // ATUALIZADO: Relação com Categoria
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("items")
+}
