@@ -4,7 +4,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("postgresql://postgres:[ke9RefLt@]@db.qhsitlhngaqboxprjmlq.supabase.co:5432/postgres")
+  // CORREÇÃO: Agora ele vai ler a variável DATABASE_URL do seu arquivo .env.local
+  url = env("DATABASE_URL")
 }
 
 // NOVO: Modelo para Categorias
